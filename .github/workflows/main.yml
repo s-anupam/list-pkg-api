@@ -1,0 +1,22 @@
+name: list-pkg-api
+on:
+  push:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      user: ${{ github.repository_owner }}
+      GITHUB_API_BASE_URL: https://api.github.com
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:         
+      - name: list-packages-container
+        run: |
+          package_type=container
+          curl \
+               -H "Accept: application/vnd.github.v3+json" \
+               -H "Authorization: token ${GITHUB_TOKEN}" \
+                  "${GITHUB_API_BASE_URL}/users/${user}/packages?package_type=${package_type}"
